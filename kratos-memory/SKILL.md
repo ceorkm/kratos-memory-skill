@@ -9,25 +9,28 @@ Persistent memory across sessions for any AI coding agent. Save what matters, re
 
 ## Setup Check
 
-Before using any command, verify kratos-memory is available:
+Before using any command, verify kratos-memory is installed AND working:
 
 ```bash
-kratos-memory --version
+kratos-memory status
 ```
 
-If not found, install it:
-
+**If command not found** — install it:
 ```bash
 npm install -g kratos-memory
 ```
 
-If npm is unavailable, use npx (slower but works without install):
-
+**If status fails with a native module error** (e.g. `NODE_MODULE_VERSION` mismatch) — reinstall:
 ```bash
-npx kratos-memory@latest --version
+npm uninstall -g kratos-memory && npm install -g kratos-memory
 ```
 
-Once confirmed, use `kratos-memory` for all commands below. If globally installed, use it directly. If using npx, prefix with `npx kratos-memory@latest`.
+**If npm is unavailable**, use npx (slower but works without install):
+```bash
+npx kratos-memory@latest status
+```
+
+Only proceed once `status` runs successfully. If it shows project info and memory stats, the setup is healthy.
 
 ## Session Start — Always Do This
 
