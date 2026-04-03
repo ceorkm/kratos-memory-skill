@@ -32,6 +32,23 @@ After global install, use `kratos-memory` directly. With npx, prefix commands wi
 
 To check if installed: `kratos-memory --version`
 
+## Global Memory
+
+All read/write commands support `--global` / `-g` to use the global memory store instead of the project-scoped store.
+
+Global memories are shared across ALL projects. Use for reusable lessons, tool gotchas, and workflow patterns.
+
+```bash
+kratos-memory save "lesson" --global          # save globally
+kratos-memory search "query" --global         # search global
+kratos-memory recent --global                 # recent global memories
+kratos-memory get <id> --global               # get from global
+kratos-memory update <id> "text" --global     # update global memory
+kratos-memory forget <id> --global            # delete from global
+kratos-memory pin <id> --global               # pin in global
+kratos-memory export --global                 # export global memories
+```
+
 ## save
 
 Store a memory with tags, file paths, and importance.
@@ -46,6 +63,7 @@ kratos-memory save "<text>" [options]
 | `-p, --paths <paths>` | Comma-separated file paths |
 | `-i, --importance <1-5>` | Importance (default: 3) |
 | `-c, --compress` | Compress before saving |
+| `-g, --global` | Save to global memory (shared across all projects) |
 | `-j, --json` | JSON output |
 
 **Importance:** 5=critical, 4=important, 3=normal, 2=minor, 1=low
@@ -153,7 +171,9 @@ All commands support `-j` / `--json` for machine-readable output.
 
 ## Project Isolation
 
-Each project gets its own SQLite database. Detected from cwd by walking up for `.git`, `package.json`, `Cargo.toml`, `go.mod`, `pyproject.toml`.
+Each project gets its own SQLite database. Kratos auto-detects projects from its own registry — the first time you run kratos in a directory, it registers that directory as a project. Subdirectories reuse the parent project.
+
+Global memories (`--global`) are stored separately at `~/.kratos/global/memories.db` and are accessible from any project.
 
 ## Tags Convention
 
