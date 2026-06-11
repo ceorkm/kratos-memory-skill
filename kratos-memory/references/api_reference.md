@@ -65,6 +65,7 @@ kratos-memory save "<text>" [options]
 | `-p, --paths <paths>` | Comma-separated file paths |
 | `-i, --importance <1-5>` | Importance (default: 3) |
 | `-c, --compress` | Compress before saving |
+| `-s, --supersedes <id>` | Expire an outdated memory this one replaces |
 | `-g, --global` | Save to global memory (shared across all projects) |
 | `-j, --json` | JSON output |
 
@@ -85,6 +86,9 @@ kratos-memory search "<query>" [-l limit] [-t tags] [-d] [--path-match] [-j]
 ```
 
 ## ask
+
+Results are IDF-ranked (rare terms dominate), cut at the score cliff (weakly related results dropped), and tagged with a confidence level (high/medium/low). Default limit is 5.
+
 
 Natural language question — synthesizes answer from matching memories.
 

@@ -138,7 +138,7 @@ kratos-memory save "Session: [what was done]. Key changes: [list]. Files: [list]
 | `save "<text>" --global` | Store a global memory (shared across all projects) |
 | `search "<query>"` | Find by keyword |
 | `search "<query>" --global` | Search global memories |
-| `ask "<question>"` | Natural language query — learns vocabulary from saved memories, gets smarter as you save |
+| `ask "<question>"` | Natural language query — IDF-ranked, confidence-scored, `--why` explains ranking |
 | `recent` | Latest memories |
 | `get <id>` | Full memory details |
 | `update <id> "<text>"` | Edit without delete/re-save |
@@ -189,4 +189,14 @@ kratos-memory search "the error message" --global   # then check global lessons
 - Temporary debugging notes
 - Obvious language/framework knowledge Claude already has
 - Duplicate information — search first, update if exists
+
+## Keeping Memory Canonical
+
+When a fact changes (new deploy target, new version, corrected decision), do not just save a new memory next to the stale one — replace it:
+
+```bash
+kratos-memory save "Deploy target is now Fly.io fra" --tags deploy --supersedes <old-id>
+```
+
+The old memory is expired (kept on disk, hidden from all reads). This stops outdated debugging history from outranking current facts.
 - Routine edits to global memory (don't save "edited button.tsx" globally)
