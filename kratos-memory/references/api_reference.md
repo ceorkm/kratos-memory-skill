@@ -188,11 +188,12 @@ Install or manage automatic memory enforcement for Claude Code projects. Require
 
 ```bash
 kratos-memory hooks install     # SessionStart injection + auto-capture + git post-commit
+                                # writes Claude Code AND Codex (.codex/hooks.json) hooks
 kratos-memory hooks status      # check what is installed (flags legacy-format entries)
 kratos-memory hooks uninstall   # remove kratos hooks only; user hooks untouched
 ```
 
-Install is idempotent and migrates legacy flat-format entries that Claude Code silently ignores. The git post-commit hook appends a marker-delimited block and preserves any existing hook script.
+Install is idempotent and migrates legacy flat-format entries that Claude Code silently ignores. Codex hooks use the same schema; Codex requires one-time approval via /hooks. The git post-commit hook appends a marker-delimited block and preserves any existing hook script.
 
 ## JSON Mode
 

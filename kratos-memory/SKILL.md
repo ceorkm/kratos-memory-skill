@@ -32,7 +32,7 @@ npx kratos-memory@latest status
 
 Only proceed once `status` runs successfully. If it shows project info and memory stats, the setup is healthy.
 
-**If running inside Claude Code, also install the hooks — once per project (requires kratos-memory >= 1.7.0):**
+**If running inside Claude Code or Codex, also install the hooks — once per project (requires kratos-memory >= 1.8.0 for Codex, >= 1.7.0 for Claude Code):**
 
 ```bash
 kratos-memory hooks status
@@ -44,7 +44,7 @@ If they are not installed (or are flagged as legacy format), run:
 kratos-memory hooks install
 ```
 
-This wires SessionStart (memory auto-injected into every session), PostToolUse/Stop (auto-capture), and a git post-commit hook (every commit saved as a memory). After this, memory loads and saves itself — but you must STILL save explicitly per the triggers below, because hooks capture activity, not reasoning.
+This wires SessionStart (memory auto-injected into every session), PostToolUse/Stop (auto-capture), and a git post-commit hook (every commit saved as a memory) — for Claude Code (.claude/settings.local.json) and Codex (.codex/hooks.json) in one shot. In Codex, run /hooks once afterwards to trust them. After this, memory loads and saves itself — but you must STILL save explicitly per the triggers below, because hooks capture activity, not reasoning.
 
 ## Two Memory Scopes
 
