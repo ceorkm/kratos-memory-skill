@@ -14,6 +14,8 @@
 - [export](#export)
 - [status](#status)
 - [scan](#scan)
+- [context](#context)
+- [hooks](#hooks)
 - [JSON Mode](#json-mode)
 - [Project Isolation](#project-isolation)
 - [Tags Convention](#tags-convention)
@@ -164,6 +166,33 @@ kratos-memory scan "<text>" [--redact] [-j]
 ```
 
 Detects: SSN, credit cards, emails, API keys (sk-, ghp_, AKIA), JWTs, passwords.
+
+## context
+
+Compact, token-budgeted memory block for session injection (used by the Claude Code SessionStart hook; also useful manually). Requires kratos-memory >= 1.7.0.
+
+```bash
+kratos-memory context [options]
+```
+
+| Option | Description |
+|--------|-------------|
+| `-b, --budget <tokens>` | Token budget (default: 2000) |
+| `-j, --json` | JSON output |
+
+Sections: Pinned, Decisions & fixes (importance 4+), Recent, last session summary. Merges project and global scopes. Prints nothing when the project has no memories.
+
+## hooks
+
+Install or manage automatic memory enforcement for Claude Code projects. Requires kratos-memory >= 1.7.0.
+
+```bash
+kratos-memory hooks install     # SessionStart injection + auto-capture + git post-commit
+kratos-memory hooks status      # check what is installed (flags legacy-format entries)
+kratos-memory hooks uninstall   # remove kratos hooks only; user hooks untouched
+```
+
+Install is idempotent and migrates legacy flat-format entries that Claude Code silently ignores. The git post-commit hook appends a marker-delimited block and preserves any existing hook script.
 
 ## JSON Mode
 

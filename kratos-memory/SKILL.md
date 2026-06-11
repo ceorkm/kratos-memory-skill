@@ -32,6 +32,20 @@ npx kratos-memory@latest status
 
 Only proceed once `status` runs successfully. If it shows project info and memory stats, the setup is healthy.
 
+**If running inside Claude Code, also install the hooks — once per project (requires kratos-memory >= 1.7.0):**
+
+```bash
+kratos-memory hooks status
+```
+
+If they are not installed (or are flagged as legacy format), run:
+
+```bash
+kratos-memory hooks install
+```
+
+This wires SessionStart (memory auto-injected into every session), PostToolUse/Stop (auto-capture), and a git post-commit hook (every commit saved as a memory). After this, memory loads and saves itself — but you must STILL save explicitly per the triggers below, because hooks capture activity, not reasoning.
+
 ## Two Memory Scopes
 
 Kratos has two memory layers. Use the right one:
@@ -52,10 +66,16 @@ kratos-memory recent --global         # recent global memories
 At the beginning of every session, load project context:
 
 ```bash
+kratos-memory context
+```
+
+This is a compact, token-budgeted block: pinned rules first, then decisions and fixes, then recent work (project + global merged). If hooks are installed it is already injected automatically — do not run it twice. For the full report (topics, most-touched files, stale memories worth pruning):
+
+```bash
 kratos-memory summary
 ```
 
-This shows pinned rules, key decisions, topics, and recent activity. If working on a specific area, search for it:
+If working on a specific area, search for it:
 
 ```bash
 kratos-memory ask "How does [area] work?"
@@ -118,7 +138,7 @@ kratos-memory save "Session: [what was done]. Key changes: [list]. Files: [list]
 | `save "<text>" --global` | Store a global memory (shared across all projects) |
 | `search "<query>"` | Find by keyword |
 | `search "<query>" --global` | Search global memories |
-| `ask "<question>"` | Natural language query |
+| `ask "<question>"` | Natural language query — learns vocabulary from saved memories, gets smarter as you save |
 | `recent` | Latest memories |
 | `get <id>` | Full memory details |
 | `update <id> "<text>"` | Edit without delete/re-save |
@@ -128,6 +148,8 @@ kratos-memory save "Session: [what was done]. Key changes: [list]. Files: [list]
 | `export` | Dump all as JSON |
 | `status` | Dashboard |
 | `scan "<text>"` | Check for secrets/PII |
+| `context` | Compact context block for session injection (`--budget <tokens>`) |
+| `hooks install` | One-time per project: session injection + auto-capture + git capture |
 
 Add `--global` / `-g` to any read/write command to use global scope.
 
